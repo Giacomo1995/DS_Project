@@ -1,9 +1,14 @@
 import math
 import sys
 from costs_generator import generate_costs
+import time
 
 
 def kNN(C, start_node):
+
+    # Starting the timer
+    t0 = time.time()
+
     # Sets P of visited nodes (initially empty)
     P = []
     i = start_node
@@ -31,14 +36,33 @@ def kNN(C, start_node):
     dim = len(P)
     for k in range(dim-1):
         tot_cost += C[P[k]][P[(k+1)]]
-    tot_cost += C[dim-1][start_node]
+    tot_cost += C[P[dim-1]][start_node]
 
-    print('Total cost: ' + str(tot_cost)) # Prints the total cost
+    print('Cost: ' + str(tot_cost)) # Prints the total cost
 
     for i in range(len(P)):
         P[i] += 1
 
     print("Path: " + str(P)) # Prints the found path (the sequence of nodes)
+    print("Time: " + str(time.time() - t0))
+
+    return tot_cost
+
+
+def opt_kNN(C):
+
+    t0 = time.time()
+
+    min = inf
+    for i in range(len(C)):
+        curr = kNN(C, i)
+        if curr < min:
+            min = curr
+
+    print(' --- --- --- --- ---')
+    print('Optimistic knn result: ' + str(min))
+    print('Time: ' + str(time.time()-t0))
+    print(' --- --- --- --- ---')
 
 
 '''
@@ -50,6 +74,8 @@ C = [[inf, 6.12, 11.1, 4.33, 3.83],
     [6.1, 7.56, inf, 4.25, 4.33],
     [7.33, 12.72, 12.25, inf, 8.33],
     [1.83, 4.61, 7.33, 3.33, inf]]
+
+opt_kNN(C)
 
 kNN(C, 0)
 
