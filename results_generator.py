@@ -5,15 +5,17 @@ from pylatex import Document, Section, Subsection, Tabular, MultiColumn, MultiRo
 
 from costs_generator import generate_costs
 from sweep import sweep
+from nearest_insertion import nearest_insertion
+from farthest_insertion import farthest_insertion
 
 # Embedded algorithm names
-supported_algorithms = ['sweep', 'knn', 'knn-opt', 'near-ins', 'far-ins']
+supported_algorithms = ['sweep', 'knn', 'knn-opt', 'nearest_insertion', 'farthest_insertion']
 algorithm_name_dict = {
     'sweep': 'Sweep',
     'knn': 'Nearest Neighbour',
     'knn-opt': 'Nearest Neighbour Optimized',
-    'near-ins': 'Nearest Insertion',
-    'far-ins': 'Farthest Insertion'
+    'nearest_insertion': 'Nearest Insertion',
+    'farthest_insertion': 'Farthest Insertion'
 }
 
 # Embedded wind directions
@@ -59,6 +61,13 @@ def generate_table_all_16(algorithm):
                 # We catch the correct algorithm to use
                 if algorithm == 'sweep':
                     tot_cost, tot_time = sweep(current_map, generate_costs(current_map, current_wind), plot=False)
+
+                if algorithm == 'nearest_insertion':
+                    tot_cost, tot_time = nearest_insertion(generate_costs(current_map, current_wind))
+
+                if algorithm == 'farthest_insertion':
+                    tot_cost, tot_time = farthest_insertion(generate_costs(current_map, current_wind))
+
                 # TODO: catch the other algorithm - Nearest Neighbour, Nearest Insertion and Farthest Insertion
 
                 # The row with the data is written onto a new row and the index is incremented
@@ -71,12 +80,10 @@ def generate_table_all_16(algorithm):
         # And finally we compose and generate the new document with the embedded table
         section.append(table)
         doc.append(section)
-        doc.generate_pdf(clean_tex=False)
+        doc.generate_tex()
+        #doc.generate_pdf(clean_tex=False)
 
 
-generate_table_all_16('sweep')
-
-
-
-
-
+#generate_table_all_16('sweep')
+#generate_table_all_16('nearest_insertion')
+generate_table_all_16('farthest_insertion')
