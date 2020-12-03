@@ -1,7 +1,7 @@
 import math
 import os
 
-from pylatex import Document, Section, Subsection, Tabular, MultiColumn, MultiRow
+from pylatex import Document, Section, Tabular, MultiColumn
 
 from costs_generator import generate_costs
 from sweep import sweep
@@ -60,15 +60,13 @@ def generate_table_all_16(algorithm):
 
                 # We catch the correct algorithm to use
                 if algorithm == 'sweep':
-                    tot_cost, tot_time = sweep(current_map, generate_costs(current_map, current_wind), plot=False)
+                    tot_cost, tot_time, path = sweep(current_map, generate_costs(current_map, current_wind), plot=False)
 
                 if algorithm == 'nearest_insertion':
-                    tot_cost, tot_time = nearest_insertion(generate_costs(current_map, current_wind))
+                    tot_cost, tot_time, path = nearest_insertion(generate_costs(current_map, current_wind))
 
                 if algorithm == 'farthest_insertion':
-                    tot_cost, tot_time = farthest_insertion(generate_costs(current_map, current_wind))
-
-                # TODO: catch the other algorithm - Nearest Neighbour, Nearest Insertion and Farthest Insertion
+                    tot_cost, tot_time, path = farthest_insertion(generate_costs(current_map, current_wind))
 
                 # The row with the data is written onto a new row and the index is incremented
                 table.add_row((map_index, "{:.2f}".format(tot_cost), "{:.2e}".format(tot_time)))
@@ -81,9 +79,8 @@ def generate_table_all_16(algorithm):
         section.append(table)
         doc.append(section)
         doc.generate_tex()
-        #doc.generate_pdf(clean_tex=False)
 
 
-#generate_table_all_16('sweep')
-#generate_table_all_16('nearest_insertion')
+generate_table_all_16('sweep')
+generate_table_all_16('nearest_insertion')
 generate_table_all_16('farthest_insertion')

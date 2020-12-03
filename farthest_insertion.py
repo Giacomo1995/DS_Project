@@ -65,7 +65,7 @@ def farthest_insertion(G, starting_node = 0):
             for i in range(len(C)):
                 final_cost = final_cost + G[C[i]][(C[(i+1)%len(C)])]
 
-            return final_cost, tot_time
+            return final_cost, tot_time, C
 
 
 # TEST

@@ -15,9 +15,15 @@ def visualize_path(path, topology):
 
     xs, ys = __get_coords(topology)
 
-    for i in range(len(path) - 1):
-        p1 = topology[path[i]]
-        p2 = topology[path[i+1]]
+    for i in range(len(path)):
+
+        if i == len(path)-1:
+            p1 = topology[path[i]]
+            p2 = topology[path[0]]
+        else:
+            p1 = topology[path[i]]
+            p2 = topology[path[i+1]]
+
         val1 = [p1[0], p2[0]]
         val2 = [p1[1], p2[1]]
         plt.plot(val1, val2, 'y')
