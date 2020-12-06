@@ -25,7 +25,7 @@ def nearest_insertion(G, starting_node = 0):
     C.append(G[starting_node].index(min(G[starting_node])))
 
     while len(C) < len(G):
-        i = random.choice(range(len(C)))
+        #i = random.choice(range(len(C)))
         min_found = False
 
         # Find the the node with minimum cost to any node of C and add it to the cycle
