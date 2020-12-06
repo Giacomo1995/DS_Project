@@ -2,7 +2,9 @@ import math
 import sys
 from costs_generator import generate_costs
 import time
-
+# Cost matrix
+inf = sys.float_info.max
+prints_on = False
 
 def kNN(C, start_node):
 
@@ -38,36 +40,40 @@ def kNN(C, start_node):
         tot_cost += C[P[k]][P[(k+1)]]
     tot_cost += C[P[dim-1]][start_node]
 
-    print('Cost: ' + str(tot_cost)) # Prints the total cost
+    if prints_on:
+        print('Cost: ' + str(tot_cost)) # Prints the total cost
 
     for i in range(len(P)):
         P[i] += 1
 
-    print("Path: " + str(P)) # Prints the found path (the sequence of nodes)
-    print("Time: " + str(time.time() - t0))
+    tot_time = time.time() - t0
+    if prints_on:
+        print("Path: " + str(P)) # Prints the found path (the sequence of nodes)
+        print("Time: " + str(tot_time))
 
-    return tot_cost
+    return tot_cost, tot_time, P
 
 
 def opt_kNN(C):
 
     t0 = time.time()
 
-    min = inf
+    min_cost = inf
+    min_P = []
     for i in range(len(C)):
-        curr = kNN(C, i)
-        if curr < min:
-            min = curr
+        curr_cost, curr_time, curr_P = kNN(C, i)
+        if curr_cost < min_cost:
+            min_cost = curr_cost
+            min_P = curr_P
 
-    print(' --- --- --- --- ---')
-    print('Optimistic knn result: ' + str(min))
-    print('Time: ' + str(time.time()-t0))
-    print(' --- --- --- --- ---')
+    if prints_on:
+        print(' --- --- --- --- ---')
+        print('Optimistic knn result: ' + str(min))
+        print('Time: ' + str(time.time()-t0))
+        print(' --- --- --- --- ---')
 
+    return min_cost, time.time()-t0, min_P
 
-'''
-# Cost matrix
-inf = sys.float_info.max
 
 C = [[inf, 6.12, 11.1, 4.33, 3.83],
     [2.12, inf, 8.56, 5.72, 2.61],
@@ -75,10 +81,10 @@ C = [[inf, 6.12, 11.1, 4.33, 3.83],
     [7.33, 12.72, 12.25, inf, 8.33],
     [1.83, 4.61, 7.33, 3.33, inf]]
 
-opt_kNN(C)
-
+c, t, p = kNN(C, 0)
+print(c)
 kNN(C, 0)
-
+'''
 print(' --- Mappa 1 --- NSEW')
 kNN(generate_costs(map1, north), 0)
 kNN(generate_costs(map1, south), 0)
