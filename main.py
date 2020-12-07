@@ -7,6 +7,7 @@ from sweep import sweep
 from kNN import kNN, opt_kNN
 
 dims = [10, 25, 50, 100, 200, 500, 1000]
+n_means = 10
 sweep_costs = []
 nearest_neighbour_costs = []
 nearest_neighbour_opt_costs = []
@@ -23,45 +24,67 @@ algorithm_names = ['Sweep', 'k-NN', 'Optimized k-NN', 'Nearest Insertion', 'Fart
 
 for dim in dims:
 
-    print(" = Generating maps for " + str(dim) + " nodes =")
-    current_map = generate_map(dim)
+    sweep_curr_cost = 0
+    sweep_curr_time = 0
+    nearest_neighbour_curr_cost = 0
+    nearest_neighbour_curr_time = 0
+    nearest_insertion_curr_cost = 0
+    nearest_insertion_curr_time = 0
+    farthest_insertion_curr_cost = 0
+    farthest_insertion_curr_time = 0
 
-    # Uptating Sweep
-    print("Generating sweep...")
-    c, t, _ = sweep(current_map, generate_costs(current_map, 0), plot=False)
-    sweep_costs.append(c)
-    sweep_times.append(t)
-    print("Sweep time: " + "{:.2f}".format(t))
+    for i in range(n_means):
 
-    # Uptating Nearest Neighbour
-    print("Generating nearest neighbour...")
-    c, t, _ = kNN(generate_costs(current_map, 0), 0)
-    nearest_neighbour_costs.append(c)
-    nearest_neighbour_times.append(t)
-    print("Nearest neighbour time: " + "{:.2f}".format(t))
+        print(" = Generating maps for " + str(dim) + " nodes =")
+        current_map = generate_map(dim)
 
-    nearest_neighbour_opt_costs.append(0)
-    nearest_neighbour_opt_times.append(0) # TODO: remove this line and uncomment the below section
-    # # Uptating Optimized Nearest Neighbour
-    # print("Generating optimized nearest neighbour...")
-    # c, t, _ = opt_kNN(generate_costs(current_map, 0))
-    # nearest_neighbour_opt_costs.append(c)
-    # nearest_neighbour_opt_times.append(t)
-    # print("Optimized nearest neighbour time: " + "{:.2f}".format(t))
+        # Uptating Sweep
+        print("Generating sweep...")
+        c, t, _ = sweep(current_map, generate_costs(current_map, 0), plot=False)
+        sweep_curr_cost += c
+        sweep_curr_time += t
+        print("Sweep time: " + "{:.2f}".format(t))
 
-    # Uptating Nearest Insertion
-    print("Generating nearest insertion...")
-    c, t, _ = nearest_insertion(generate_costs(current_map, 0))
-    nearest_insertion_costs.append(c)
-    nearest_insertion_times.append(t)
-    print("Nearest insertion time: " + "{:.2f}".format(t))
+        # Uptating Nearest Neighbour
+        print("Generating nearest neighbour...")
+        c, t, _ = kNN(generate_costs(current_map, 0), 0)
+        nearest_neighbour_curr_cost += c
+        nearest_neighbour_curr_time += t
+        print("Nearest neighbour time: " + "{:.2f}".format(t))
 
-    # Uptating Farthest Insertion
-    print("Generating farthest insertion...")
-    c, t, _ = farthest_insertion(generate_costs(current_map, 0))
-    farthest_insertion_costs.append(c)
-    farthest_insertion_times.append(t)
-    print("Farthest insertion time: " + "{:.2f}".format(t))
+
+        # # Uptating Optimized Nearest Neighbour
+        # print("Generating optimized nearest neighbour...")
+        # c, t, _ = opt_kNN(generate_costs(current_map, 0))
+        # nearest_neighbour_opt_costs.append(c)
+        # nearest_neighbour_opt_times.append(t)
+        # print("Optimized nearest neighbour time: " + "{:.2f}".format(t))
+
+        # Uptating Nearest Insertion
+        print("Generating nearest insertion...")
+        c, t, _ = nearest_insertion(generate_costs(current_map, 0))
+        nearest_insertion_curr_cost += c
+        nearest_insertion_curr_time += t
+        print("Nearest insertion time: " + "{:.2f}".format(t))
+
+        # Uptating Farthest Insertion
+        print("Generating farthest insertion...")
+        c, t, _ = farthest_insertion(generate_costs(current_map, 0))
+        farthest_insertion_curr_cost += c
+        farthest_insertion_curr_time += t
+        print("Farthest insertion time: " + "{:.2f}".format(t))
+
+    sweep_costs.append(sweep_curr_cost/n_means)
+    sweep_times.append(sweep_curr_time/n_means)
+    nearest_neighbour_costs.append(nearest_neighbour_curr_cost/n_means)
+    nearest_neighbour_times.append(nearest_neighbour_curr_time/n_means)
+    nearest_insertion_costs.append(nearest_insertion_curr_cost/n_means)
+    nearest_insertion_times.append(nearest_insertion_curr_time/n_means)
+    farthest_insertion_costs.append(farthest_insertion_curr_cost/n_means)
+    farthest_insertion_times.append(farthest_insertion_curr_time/n_means)
+
+    nearest_neighbour_opt_costs.append(0)   # TODO: remove this line and uncomment the below section
+    nearest_neighbour_opt_times.append(0)   # TODO: remove this line and uncomment the below section
 
 algorithm_costs = [sweep_costs,
                    nearest_neighbour_costs,
