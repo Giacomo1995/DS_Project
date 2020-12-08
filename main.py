@@ -28,6 +28,8 @@ for dim in dims:
     sweep_curr_time = 0
     nearest_neighbour_curr_cost = 0
     nearest_neighbour_curr_time = 0
+    nearest_neighbour_opt_curr_cost = 0
+    nearest_neighbour_opt_curr_time = 0
     nearest_insertion_curr_cost = 0
     nearest_insertion_curr_time = 0
     farthest_insertion_curr_cost = 0
@@ -53,12 +55,12 @@ for dim in dims:
         print("Nearest neighbour time: " + "{:.2f}".format(t))
 
 
-        # # Uptating Optimized Nearest Neighbour
-        # print("Generating optimized nearest neighbour...")
-        # c, t, _ = opt_kNN(generate_costs(current_map, 0))
-        # nearest_neighbour_opt_costs.append(c)
-        # nearest_neighbour_opt_times.append(t)
-        # print("Optimized nearest neighbour time: " + "{:.2f}".format(t))
+        # Uptating Optimized Nearest Neighbour
+        print("Generating optimized nearest neighbour...")
+        c, t, _ = opt_kNN(generate_costs(current_map, 0))
+        nearest_neighbour_opt_curr_cost += c
+        nearest_neighbour_opt_curr_time += t
+        print("Optimized nearest neighbour time: " + "{:.2f}".format(t))
 
         # Uptating Nearest Insertion
         print("Generating nearest insertion...")
@@ -78,14 +80,14 @@ for dim in dims:
     sweep_times.append(sweep_curr_time/n_means)
     nearest_neighbour_costs.append(nearest_neighbour_curr_cost/n_means)
     nearest_neighbour_times.append(nearest_neighbour_curr_time/n_means)
+    nearest_neighbour_opt_costs.append(nearest_neighbour_opt_curr_cost/n_means)
+    nearest_neighbour_opt_times.append(nearest_neighbour_opt_curr_time/n_means)
     nearest_insertion_costs.append(nearest_insertion_curr_cost/n_means)
     nearest_insertion_times.append(nearest_insertion_curr_time/n_means)
     farthest_insertion_costs.append(farthest_insertion_curr_cost/n_means)
     farthest_insertion_times.append(farthest_insertion_curr_time/n_means)
 
-    nearest_neighbour_opt_costs.append(0)   # TODO: remove this line and uncomment the below section
-    nearest_neighbour_opt_times.append(0)   # TODO: remove this line and uncomment the below section
-
+    
 algorithm_costs = [sweep_costs,
                    nearest_neighbour_costs,
                    nearest_neighbour_opt_costs,
