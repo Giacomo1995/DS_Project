@@ -87,7 +87,7 @@ for dim in dims:
     farthest_insertion_costs.append(farthest_insertion_curr_cost/n_means)
     farthest_insertion_times.append(farthest_insertion_curr_time/n_means)
 
-    
+
 algorithm_costs = [sweep_costs,
                    nearest_neighbour_costs,
                    nearest_neighbour_opt_costs,
