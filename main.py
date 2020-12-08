@@ -1,3 +1,5 @@
+import sys
+
 from costs_generator import generate_costs
 from farthest_insertion import farthest_insertion
 from map_generator import generate_map
@@ -5,8 +7,9 @@ from nearest_insertion import nearest_insertion
 from results_generator import generate_comparison
 from sweep import sweep
 from kNN import kNN, opt_kNN
+from graphic_manager import plot_comparison
 
-dims = [10, 25, 50, 100, 200, 500, 1000]
+dims = [10, 25, 50, 100, 200, 500]
 n_means = 10
 sweep_costs = []
 nearest_neighbour_costs = []
@@ -21,6 +24,9 @@ nearest_insertion_times = []
 farthest_insertion_times = []
 
 algorithm_names = ['Sweep', 'k-NN', 'Optimized k-NN', 'Nearest Insertion', 'Farthest Insertion']
+
+
+
 
 for dim in dims:
 
@@ -53,7 +59,6 @@ for dim in dims:
         nearest_neighbour_curr_cost += c
         nearest_neighbour_curr_time += t
         print("Nearest neighbour time: " + "{:.2f}".format(t))
-
 
         # Uptating Optimized Nearest Neighbour
         print("Generating optimized nearest neighbour...")
@@ -100,6 +105,8 @@ algorithm_times = [sweep_times,
                    nearest_insertion_times,
                    farthest_insertion_times]
 
+plot_comparison(algorithm_costs)
+plot_comparison(algorithm_times)
 generate_comparison(dims, algorithm_names, algorithm_costs, 'COST')
 generate_comparison(dims, algorithm_names, algorithm_times, 'TIME')
 

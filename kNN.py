@@ -54,21 +54,23 @@ def kNN(G, starting_node = 0):
 
 
 #  Optimize k-NN
-def opt_kNN(G, starting_node = 0):
+def opt_kNN(G, starting_node=0):
 
     inf = sys.float_info.max
     min_cost = inf
+    t0 = time.time()  # Starting the timer
 
     # Iterate the k-NN algorithm for all possible starting nodes and get the best solution (between the found ones)
+    C = []
     for i in range(len(G[0])):
         final_cost, t, p = kNN(G, i)
 
         if (final_cost < min_cost):
             min_cost = final_cost
-            tot_time = t
             C = p
 
-    return min_cost, tot_time, C
+    final_time = time.time() - t0
+    return min_cost, final_time, C
 
 # TEST
 

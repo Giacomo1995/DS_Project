@@ -32,6 +32,14 @@ def visualize_path(path, topology):
     plt.show()
 
 
+def plot_comparison(resut_list):
+
+    for element in resut_list:
+        plt.plot(element)
+
+    plt.show()
+
+
 def __get_coords(topology):
 
     xs = []
